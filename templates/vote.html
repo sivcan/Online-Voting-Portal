@@ -23,7 +23,7 @@
           <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="/">Welcome to Online Voting Portal</a>
+          <a class="navbar-brand" href="/">Welcome {{ aadharNumber }}</a>
 
           <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
@@ -42,31 +42,16 @@
         </div>
     <div class="container">
     <div class="card-deck">
-      <div class="card card-inverse" style="background-color: #333; border-color: #333">
-        <img class="card-img-top" src="https://unsplash.it/300/252" alt="Card image cap">
-        <div class="card-block">
-          <h4 class="card-title">BJP</h4>
-            <p class="card-text">Bhartiya Janta Party</p>
-            <a href="#" class="btn btn-primary">Vote</a>
+        {% for party in parties %}
+          <div class="card card-inverse" style="background-color: #333; border-color: #333">
+            <img class="card-img-center" src="../static/img/{{ party.imageUrl }}" alt="Card image cap" height="270" width="350">
+            <div class="card-block">
+              <h4 class="card-title">{{ party.name }} | {{ party.count }}</h4>
+                <a href="{{ url_for('Vote', partyID = party.id)}}" class="btn btn-primary">Vote</a>
+            </div>
+          </div>
+        {% endfor %}
         </div>
-      </div>
-        <div class="card card-inverse" style="background-color: #333; border-color: #333">
-        <img class="card-img-top" src="https://unsplash.it/300/250" alt="Card image cap">
-        <div class="card-block">
-          <h4 class="card-title">CONGRESS</h4>
-          <p class="card-text">Congress</p>
-            <a href="#" class="btn btn-primary">Vote</a>
-        </div>
-      </div>
-        <div class="card card-inverse" style="background-color: #333; border-color: #333">
-        <img class="card-img-top" src="https://unsplash.it/300/251" alt="Card image cap">
-        <div class="card-block">
-          <h4 class="card-title">AAP</h4>
-          <p class="card-text">Aam Aadmi Party</p>
-            <a href="#" class="btn btn-primary">Vote</a>
-        </div>
-      </div>
-       </div>
        </div>
     </body>
 

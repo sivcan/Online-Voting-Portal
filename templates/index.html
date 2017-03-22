@@ -43,14 +43,19 @@
     <div class="container">
 	<div class="row">
 		<div class="col-md-6 col-md-offset-1 padding-top">
-			<form action="/aadhar" method = "post">
+			<form action="/" method = "post">
 				<div class="form-group">
 					<label for="aadhar-card">Enter your 12 digit Aadhar Card Number</label>
-					<input type ="text" maxlength="50" class="form-control" name="name" placeholder="Aadhar Card">
+					<input type ="text" maxlength="50" class="form-control" name="aadhar" placeholder="Aadhar Card">
                     <br>
 					<button type="submit" class="btn btn-primary" type="submit">Login to vote!</button>
 				</div>
 			</form>
+            {% if flash %}
+            <div class="alert alert-{{ flashType }}">
+                {{ flash }}
+            </div>
+            {% endif %}
 		</div>
        </div>
        </div>

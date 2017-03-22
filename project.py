@@ -1,21 +1,8 @@
-"""
-This file is the top level file for the Item Catalog project and
-uses the Flask framework.
-
-This project allows users to add items to categories. Users can also
-edit and delete their own items.
-
-JSON endpoints are provided for catalog, category, and item.
-Authentication is handled by Google's OAuth API and Facebook's OAuth API.
-
-This file contains routes and view functions.
-"""
-
 from flask import Flask, render_template, request, redirect, \
 jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-#from database_setup import Base, Restaurant, MenuItem, User
+from database_setup import Base, User, Parties
 from flask import session as login_session
 from functools import wraps 
 import httplib2
@@ -27,51 +14,48 @@ app = Flask(__name__)
 
 APPLICATION_NAME = "Restaurant Menu Application"
 
-# Connect to Database and create database session
-#engine = create_engine('sqlite:///aadharcard.db')
-#Base.metadata.bind = engine
-#
-#DBSession = sessionmaker(bind=engine)
-#session = DBSession()
+#Connect to Database and create database session
+engine = create_engine('sqlite:///votingsystem.db')
+Base.metadata.bind = engine
 
-"""Login check decorator, used to check if the user is logged in or not.
-If not logged in, then redirects the user to the login page 
-thus preventing unauthorized access to important data."""
-def loginCheck(f):
-    @wraps(f)
-    def userLog(*args, **kwargs):
-        if 'username' not in login_session:
-            return redirect('/login')
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+@app.route('/', methods=['GET','POST'])
+def Aadhar():
+    if request.method == 'POST':
+        aadharNumber = request.form['aadhar']
+        if aadharNumber.isdigit() and len(aadharNumber) == 12 :
+            try : 
+                user = session.query(User).filter_by(aadhar=aadharNumber).one()
+                return render_template('index.html', flash = 'User has already voted!', flashType = 'danger')
+            except:
+                user = User(aadhar=aadharNumber, voted=True)
+                session.add(user)
+                session.commit()
+                parties = session.query(Parties).all()
+                return render_template('vote.html', aadharNumber = aadharNumber, parties = parties)
         else :
-            return f(*args, **kwargs)
-    return userLog
+            return render_template('index.html', flash = 'Enter the Correct Aadhar Card Number', flashType = 'danger')
+        
+    else : 
+        return render_template('index.html', flash = None)
 
-# Create anti-forgery state token
-@app.route('/login')
-def showLogin():
-    if 'username' in login_session:
-        return redirect('/restaurant')
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for x in xrange(32))
-    login_session['state'] = state
-    # return "The current session state is %s" % login_session['state']
-    return render_template('login.html', STATE=state)
-
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-
-@app.route('/aadhar', methods=['POST'])
-def checkAadhar():
-    return redirect('/vote')
-
-@app.route('/vote')
-def vote():
-    return render_template('vote.html')
+@app.route('/vote/<int:partyID>', methods=['GET', 'POST'])
+def Vote(partyID):
+    party = session.query(Parties).filter_by(id=partyID).one()
+    party.count = party.count + 1;
+    session.add(party)
+    session.commit()
+    return render_template('index.html', flash = 'You have sucessfully voted.', flashType='success')
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
+    
+    
+    
+    
+    
+    
