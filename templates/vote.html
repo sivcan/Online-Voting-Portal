@@ -17,7 +17,7 @@
   </head>
 
    <body>
-      
+
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <div class="container">
           <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@
           </div>
         </div>
         </nav>
-      
+
        <div class="jumbotron">
           <div class="container">
               <br>
@@ -46,7 +46,7 @@
           <div class="card card-inverse" style="background-color: #333; border-color: #333">
             <img class="card-img-center" src="../static/img/{{ party.imageUrl }}" alt="Card image cap" height="270" width="350">
             <div class="card-block">
-              <h4 class="card-title">{{ party.name }} | {{ party.count }}</h4>
+              <h4 class="card-title">{{ party.name }}</h4>
                 <a href="{{ url_for('Vote', partyID = party.id)}}" class="btn btn-primary">Vote</a>
             </div>
           </div>
@@ -55,7 +55,7 @@
        </div>
     </body>
 
-    
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

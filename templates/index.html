@@ -17,7 +17,7 @@
   </head>
 
    <body>
-      
+
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <div class="container">
           <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@
           </div>
         </div>
         </nav>
-      
+
        <div class="jumbotron">
           <div class="container">
               <br>
@@ -43,7 +43,8 @@
     <div class="container">
 	<div class="row">
 		<div class="col-md-6 col-md-offset-1 padding-top">
-			<form action="/" method = "post">
+            {% if not squashBug %}
+			<form method = "post">
 				<div class="form-group">
 					<label for="aadhar-card">Enter your 12 digit Aadhar Card Number</label>
 					<input type ="text" maxlength="50" class="form-control" name="aadhar" placeholder="Aadhar Card">
@@ -51,9 +52,14 @@
 					<button type="submit" class="btn btn-primary" type="submit">Login to vote!</button>
 				</div>
 			</form>
+            {% endif %}
             {% if flash %}
             <div class="alert alert-{{ flashType }}">
                 {{ flash }}
+                <br>
+                {% if success %}
+                <a href="/" class="btn btn-primary">Voting Homepage!</a>
+                {% endif %}
             </div>
             {% endif %}
 		</div>
@@ -61,7 +67,7 @@
        </div>
     </body>
 
-    
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
