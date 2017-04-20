@@ -84,6 +84,18 @@ def Vote(partyID):
     session.commit()
     return render_template('index.html', flash = 'You have successfully voted.', flashType='success', squashBug = True, success=True)
 
+@app.route('/winner', methods=['GET'])
+def Winner():
+    parties = session.query(Parties).all()
+    maxCount = 0
+    winner = None
+    for i in parties :
+        if i.count >= maxCount :
+            maxCount = i.count
+            winner = i.name
+    print winner
+    return render_template('winner.html', result=winner, maxCount=maxCount)
+
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
