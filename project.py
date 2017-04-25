@@ -96,6 +96,11 @@ def Winner():
     print winner
     return render_template('winner.html', result=winner, maxCount=maxCount)
 
+@app.route('/voters', methods=['GET'])
+def Voters():
+    voters = session.query(User).all()
+    return render_template('voters_list.html', voters=voters)
+
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
