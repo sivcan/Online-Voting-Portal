@@ -12,11 +12,16 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     aadhar = Column(String(13), nullable=False)
     voted = Column(Boolean, nullable=False, default=False)
+    name = Column(String(40), nullable=False)
+    age = Column(Integer)
+
     @property
     def serialize(self):
         return {
             'aadhar'  : self.aadhar,
             'id' : self.id,
+            'age' : self.age,
+            'name' : self.name,
             'voted' : self.voted
         }
 
@@ -28,7 +33,7 @@ class Parties(Base):
     name = Column(String(250), nullable=False)
     imageUrl = Column(String(250))
     count = Column(Integer, default=0)
-    
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""

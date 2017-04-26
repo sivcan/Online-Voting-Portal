@@ -23,4 +23,10 @@ Party3 = Parties(id=3, name="AAP", imageUrl='aap.jpg', count=0)
 session.add(Party3)
 session.commit()
 
+User1 = User(id=1, aadhar="219224447551", voted=False, name="Vishesh Goyal", age=21)
+session.add(User1)
+session.commit()
 
+User2 = User(id=2, aadhar="236165097730", voted=False, name="Rachit Taluja", age=17)
+session.add(User2)
+session.commit()

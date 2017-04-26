@@ -61,13 +61,20 @@ def Aadhar():
             if validateVerhoeff(aadharNumber) == True :
                 try :
                     user = session.query(User).filter_by(aadhar=aadharNumber).one()
-                    return render_template('index.html', flash = 'User has already voted!', flashType = 'danger')
+                    print(user)
+                    if user.voted == True :
+                        return render_template('index.html', flash = 'User has already voted!', flashType = 'danger')
+                    elif int(user.age) < 18 :
+                        return render_template('index.html', flash = 'Invalid age. Retry after you\'ve become a valid voter.', flashType='warning')
+                    else : 
+                        user.voted = True
+                        session.add(user)
+                        session.commit()
+                        parties = session.query(Parties).all()
+                        print ('Aadhar number is : ' + user.aadhar)
+                        return render_template('vote.html', aadharNumber = aadharNumber, user = user, parties = parties)
                 except:
-                    user = User(aadhar=aadharNumber, voted=True)
-                    session.add(user)
-                    session.commit()
-                    parties = session.query(Parties).all()
-                    return render_template('vote.html', aadharNumber = aadharNumber, parties = parties)
+                    return render_template('index.html', flash = 'Invalid User. Retry!', flashType = 'danger')
             else :
                 return render_template('index.html', flash = 'Invalid Aadhar Card Number. Retry!', flashType = 'danger')
         else :
